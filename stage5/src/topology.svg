@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600">
+  <style>
+    .box { fill:#f8f8ff; stroke:#333; stroke-width:1.5px; rx:6; }
+    .ns { fill:#fff0ff; stroke:#333; stroke-width:1.2px; rx:6; }
+    .text { font-family: Arial, sans-serif; font-size:13px; }
+    .title { font-weight:700; font-size:14px; }
+    .link { stroke:#444; stroke-width:2px; fill:none; }
+  </style>
+
+  <!-- Host -->
+  <g id="host">
+    <rect class="box" x="620" y="180" width="300" height="160"/>
+    <text x="770" y="205" text-anchor="middle" class="text title">Host (root ns)</text>
+    <text x="680" y="235" class="text">wlp2s0 (physical)</text>
+    <text x="680" y="255" class="text">netrepBr (bridge)</text>
+    <text x="680" y="275" class="text">veth2: 172.16.1.2/30</text>
+    <text x="680" y="295" class="text">veth4: 172.16.2.2/30</text>
+    <text x="680" y="315" class="text">veth6: 172.16.3.2/30</text>
+    <text x="820" y="345" class="text">ip_forward=1</text>
+    <text x="820" y="360" class="text">iptables MASQUERADE on wlp2s0</text>
+  </g>
+
+  <!-- ns1 -->
+  <g id="ns1">
+    <rect class="ns" x="60" y="80" width="220" height="120"/>
+    <text x="170" y="105" text-anchor="middle" class="text title">ns1</text>
+    <text x="120" y="135" class="text">veth1: 172.16.1.1/30</text>
+    <text x="120" y="155" class="text">default via 172.16.1.2</text>
+  </g>
+
+  <!-- ns2 -->
+  <g id="ns2">
+    <rect class="ns" x="60" y="320" width="220" height="160"/>
+    <text x="170" y="345" text-anchor="middle" class="text title">ns2</text>
+    <text x="120" y="375" class="text">veth3: 172.16.2.1/30</text>
+    <text x="120" y="395" class="text">veth5: 172.16.3.1/30</text>
+    <text x="120" y="415" class="text">route 172.16.1.0/30 via veth3</text>
+    <text x="120" y="435" class="text">default via 172.16.3.2</text>
+  </g>
+
+  <!-- Links (veth pairs) -->
+  <!-- ns1 veth1 --- host veth2 -->
+  <line class="link" x1="280" y1="140" x2="620" y2="240"/>
+  <text x="420" y="165" class="text">veth1 ↔ veth2 (172.16.1.0/30)</text>
+
+  <!-- ns2 veth3 --- host veth4 -->
+  <line class="link" x1="280" y1="380" x2="620" y2="260"/>
+  <text x="430" y="320" class="text">veth3 ↔ veth4 (172.16.2.0/30)</text>
+
+  <!-- ns2 veth5 --- host veth6 -->
+  <line class="link" x1="280" y1="420" x2="680" y2="320"/>
+  <text x="430" y="360" class="text">veth5 ↔ veth6 (172.16.3.0/30)</text>
+
+  <!-- Bridge connections -->
+  <line class="link" x1="700" y1="255" x2="750" y2="255" stroke-dasharray="4 2"/>
+  <text x="780" y="252" class="text">netrepBr connects veth2 & veth4</text>
+
+  <!-- Internet -->
+  <g id="internet">
+    <circle cx="920" cy="80" r="36" fill="#eef" stroke="#333"/>
+    <text x="920" y="86" text-anchor="middle" class="text">Internet</text>
+    <line class="link" x1="800" y1="200" x2="880" y2="110"/>
+    <text x="860" y="155" class="text">MASQUERADE on wlp2s0</text>
+  </g>
+
+  <!-- Legend -->
+  <rect x="20" y="500" width="960" height="72" fill="#fff" stroke="none"/>
+  <text x="40" y="520" class="text">Legend: veth pairs connect namespace↔host; bridge groups host veths at L2; host NAT+forwarding provides Internet access.</text>
+
+</svg>

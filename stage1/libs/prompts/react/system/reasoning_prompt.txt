@@ -1,0 +1,2 @@
+Reason about the tool outputs and the repository with regards to what kind of communication protocol and services a Git repository is expected to run. 
+The communication protocol should be something that is related to a source port address. 

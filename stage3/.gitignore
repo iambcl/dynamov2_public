@@ -1,0 +1,14 @@
+__pycache__
+.env
+.venv
+logs
+download_directory
+.docker_env_gpt
+.docker_env_ollama
+pcap
+mcpserver.egg-info
+uv.lock
+.vscode
+list_of_repo.txt
+*.html
+repository

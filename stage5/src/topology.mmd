@@ -1,0 +1,44 @@
+graph LR
+  subgraph Host[Host / root namespace]
+    H[Host]
+    wlp[wlp2s0 \n(physical)]
+    netrepBr[netrepBr \n(bridge)]
+    veth2[veth2\n172.16.1.2/30]
+    veth4[veth4\n172.16.2.2/30]
+    veth6[veth6\n172.16.3.2/30]
+  end
+
+  subgraph ns1[ns1 namespace]
+    veth1[veth1\n172.16.1.1/30]
+    note1["ns1 default route -> 172.16.1.2"]
+  end
+
+  subgraph ns2[ns2 namespace]
+    veth3[veth3\n172.16.2.1/30]
+    veth5[veth5\n172.16.3.1/30]
+    note2["ns2 route: 172.16.1.0/30 via veth3\nns2 default -> 172.16.3.2"]
+  end
+
+  %% veth pair links
+  veth1 --- veth2
+  veth3 --- veth4
+  veth5 --- veth6
+
+  %% host connections
+  H --- wlp
+  H --- netrepBr
+  netrepBr --- veth2
+  netrepBr --- veth4
+  H --- veth6
+
+  %% internet/NAT
+  wlp --> Internet((Internet))
+  noteNAT["Host: ip_forward=1;\niptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE"]
+  H --- noteNAT
+
+  %% annotations
+  veth1 --> note1
+  veth3 --> note2
+
+  classDef ns fill:#f9f,stroke:#333,stroke-width:1px;
+  class ns1,ns2 ns;

@@ -1,0 +1,23 @@
+FROM python:3.13-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PATH="/app/.venv/bin:$PATH"
+
+WORKDIR /app
+
+# Install project dependencies into a virtual environment.
+COPY ./dynamo_src/requirements-codex.txt ./
+RUN python -m venv /app/.venv \
+    && .venv/bin/pip install --no-cache-dir -r requirements-codex.txt
+
+# Bring in the agent code and helpers, then drop helper/libs to avoid bundling unused library code.
+COPY dynamo_src/codex.py .
+COPY dynamo_src dynamo_src
+
+# Provide a writable mount point for artifacts and secrets at runtime.
+RUN mkdir -p /app/download_directory
+VOLUME ["/app/download_directory"]
+
+# Default to running codex; override the final arg to run graph instead
+ENTRYPOINT []
+CMD ["sleep", "infinity"]

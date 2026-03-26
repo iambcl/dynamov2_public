@@ -1,0 +1,5 @@
+.venv
+repository
+.env
+download_directory
+pcap

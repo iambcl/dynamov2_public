@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  ssl_test:
+    image: python:3.11-slim
+    environment:
+      - SSLKEYLOGFILE=/var/log/ssl_secrets/sslkey.log
+    volumes:
+      - ../ssl_logs:/var/log/ssl_secrets
+      - ./:/app:ro
+    working_dir: /app
+    command: >
+      sh -c "python3 ssl_test.py && sleep 2"
+    restart: "no"

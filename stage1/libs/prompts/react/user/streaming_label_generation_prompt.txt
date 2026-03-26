@@ -1,0 +1,14 @@
+Now based on your previous inferences, replace <-streaming-> and <-confidence-> in the following format and only reply with initialized format. 
+Do not include any @ symbol unless it is at the start or the end.
+
+@@STREAMING: <-streaming->@@
+@@CONFIDENCE: <-confidence->@@
+@@REASON: <-reason->@@
+
+<-confidence-> should be between 0.1 to 0.99
+
+For example:
+
+@@STREAMING: True@@
+@@CONFIDENCE: 0.5@@
+@@REASON: This is mentioned in the README file.@@
